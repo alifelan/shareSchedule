@@ -1,0 +1,7 @@
+<h1>Classes</h1>
+
+{% for cl in classes %}
+    <a href="{% url 'schedules:class_detail' cl.class_id %}"><h1>{{ cl }}</h1></a>
+{% empty %}
+    <h1> No classes available </h1>
+{% endfor %}

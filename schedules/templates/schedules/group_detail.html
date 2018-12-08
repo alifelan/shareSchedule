@@ -1,0 +1,8 @@
+<a href="{% url 'schedules:class_detail' class_details.class_id %}"><h1>{{ class_details }}</h1></a>
+<a href="{% url 'schedules:group_detail' class_details.class_id group_details.group_number %}"><h1>{{ group_details }}</h1></a>
+
+{% for student in students_enrolled %}
+    <a href="{% url 'schedules:student_detail' student.id %}"><h1>{{ student }}</h1></a>
+{% empty %}
+    <h1> No students enrolled </h1>
+{% endfor %}

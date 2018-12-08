@@ -1,0 +1,8 @@
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{% url 'schedules:register' %}" method="post" id='register'>
+{% csrf_token %}
+Nombre: <input type="text" name="name"><br>
+Horario en html: <textarea form='register' rows=10 name="rawSchedule"></textarea><br>
+<input type="submit" value="Register">
+</form>
