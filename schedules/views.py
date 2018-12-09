@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
+from django.core.exceptions import ObjectDoesNotExist
 from schedules.models import Class, Group, Teacher, Student, Date
 from bs4 import BeautifulSoup as bs4
 from datetime import datetime, timedelta
@@ -16,13 +17,13 @@ def classes(request):
 def class_detail(request, class_id):
     current_class = Class.objects.get(class_id=class_id)
     groups = Group.objects.filter(class_id=current_class)
-    return render(request, 'schedules/class_detail.html', {'class_details': current_class, 'groups':groups})
+    return render(request, 'schedules/class_detail.html', {'class_': current_class, 'groups':groups})
 
 def group_detail(request, class_id, group_number):
     current_class = Class.objects.get(class_id=class_id)
     group = Group.objects.get(class_id=current_class, group_number=group_number)
     students_enrolled = Student.objects.filter(enrolled_in=group)
-    return render(request, 'schedules/group_detail.html', {'class_details':current_class, 'group_details':group, 'students_enrolled':students_enrolled})
+    return render(request, 'schedules/group_detail.html', {'class_':current_class, 'group':group, 'students_enrolled':students_enrolled})
 
 def student_detail(request, student_id):
     student = Student.objects.get(id=student_id)
@@ -36,14 +37,28 @@ def register(request):
     except KeyError:
         return render(request, 'schedules/register.html')
     else:
-        if not Student.objects.filter(student_name=name):
-            Student(student_name=name).save()
-        student = Student.objects.get(student_name=name)
-        table = bs4(rawSchedule).find('div', alink='#0000ff', vlink='#0000ff', leftmargin='0', topmargin='0', style='background-color:#FFFFFF').find_all('center')[2].find('table').find('table')
+        try:
+            student = Student.objects.get(student_name=name)
+        except ObjectDoesNotExist:
+            student = Student(student_name=name)
+            student.save()
+        soup = bs4(rawSchedule)
+        table = soup.find('div', alink='#0000ff', vlink='#0000ff', style='background-color:#FFFFFF')
+        if not table:
+            table = soup.find('div', alink='#0000ff', vlink='#0000ff', style='background-color:white;')
+        if not table:
+            table = soup.find('div', alink='#0000FF', vlink='#0000FF', style='background-color:white;')
+        if not table:
+            table = soup.find('div', alink='#0000ff', vlink='#0000ff', style='background-color:#ffffff')
+        if not table:
+            table = soup.find('div', alink='#0000FF', vlink='#0000FF', style='background-color:#FFFFFF')
+        if not table:
+            table = soup.find('div', alink='#0000FF', vlink='#0000FF', style='background-color:ffffff')
+        table = table.find_all('center')[2].find('table').find('table')
         cl = []
         classes = []
         for row in table.find_all('tr'):
-            if row['bgcolor'] == '#9bbad6':
+            if row['bgcolor'] == '#9bbad6' or row['bgcolor'] == '#9BBAD6':
                 classes.append(cl)
                 cl = []
                 cl.append(row)
@@ -54,22 +69,29 @@ def register(request):
         for cl in classes:
             class_text = cl[0].find('code').text
             class_id = class_text[:class_text.find('.')]
-            if not Class.objects.filter(class_id=class_id):
+            try:
+                current_class = Class.objects.get(class_id=class_id)
+            except ObjectDoesNotExist:
                 class_name = class_text[class_text.find(' ') + 1:]
-                Class(class_id=class_id, class_name=class_name).save()
-            current_class = Class.objects.get(class_id=class_id)
+                current_class = Class(class_id=class_id, class_name=class_name)
+                current_class.save()
             class_group = class_text[class_text.find('.') + 1:class_text.find(' ')]
-            if not Group.objects.filter(class_id=current_class, group_number=class_group, semester='EM2019'):
-                Group(class_id=current_class, group_number=class_group, semester='EM2019').save()
-            group = Group.objects.get(class_id=current_class, group_number=class_group, semester='EM2019')
+            try:
+                group = Group.objects.get(class_id=current_class, group_number=class_group, semester='EM2019')
+            except ObjectDoesNotExist:
+                group = Group(class_id=current_class, group_number=class_group, semester='EM2019')
+                group.save()
             student.enrolled_in.add(group)
             for l in cl[1:]:
                 if l['align'] == 'left' and 'Atributo' not in l.find('code').string:
                     teacher_name = l.find_all('code')[1].contents[0]
-                    if not Teacher.objects.filter(teacher_name=teacher_name):
-                        Teacher(teacher_name=teacher_name).save()
-                    group.teachers.add(Teacher.objects.get(teacher_name=teacher_name))
-                elif l['align'] == 'center' and l['bgcolor'] == '#EEEEEE':
+                    try:
+                        teacher = Teacher.objects.get(teacher_name=teacher_name)
+                    except ObjectDoesNotExist:
+                        teacher = Teacher(teacher_name=teacher_name)
+                        teacher.save()
+                    group.teachers.add(teacher)
+                elif l['align'] == 'center' and (l['bgcolor'] == '#EEEEEE' or l['bgcolor'] == '#eeeeee'):
                     data = l.find_all('code')
                     days = []
                     for i, c in enumerate(data[1].string[1:].replace('\xa0', ' ')):
@@ -87,4 +109,4 @@ def register(request):
                     if (datetime.strptime(time[1], fmt) - datetime.strptime(time[0], fmt)).seconds // 60 > 90:
                         for date_id in date_ids:
                             group.dates.add(Date.objects.get(id=date_id + 1))
-        return HttpResponseRedirect(reverse('index'))
+        return HttpResponseRedirect(reverse('schedules:classes'))

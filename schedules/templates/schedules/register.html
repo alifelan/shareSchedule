@@ -1,3 +1,4 @@
+<a href="{% url 'schedules:classes' %}"><h1>Classes</h1></a>
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
 <form action="{% url 'schedules:register' %}" method="post" id='register'>
