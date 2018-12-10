@@ -1,8 +1,9 @@
 <a href="{% url 'schedules:classes' %}"><h1>Classes</h1></a>
 <h1>{{ student }}</h1>
 
+<h3>Groups</h3>
 {% for group in groups %}
-    <a href="{% url 'schedules:group_detail' group.class_id.class_id group.group_number %}"><h1>{{ group }}</h1></a>
+    <a href="{% url 'schedules:group_detail' group.class_id.class_id group.group_number %}"><p>{{ group }}</p></a>
 {% empty %}
-    <h1> No groups available </h1>
+    <p> No groups available </p>
 {% endfor %}

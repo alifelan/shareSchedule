@@ -1,9 +1,10 @@
 <a href="{% url 'schedules:classes' %}"><h1>Classes</h1></a>
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-<form action="{% url 'schedules:register' %}" method="post" id='register'>
+<form action="{% url 'schedules:register' %}" method="post" id='register' enctype="multipart/form-data">
 {% csrf_token %}
 Nombre: <input type="text" name="name"><br>
-Horario en html: <textarea form='register' rows=10 name="rawSchedule"></textarea><br>
+Horario html copypasteado: <textarea form='register' rows=10 name="rawSchedule"></textarea><br>
+Horario html en archivo html: <input type='file' name='rawSchedule.html' accept='.html'>
 <input type="submit" value="Register">
 </form>

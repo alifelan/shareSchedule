@@ -3,7 +3,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.core.exceptions import ObjectDoesNotExist
 from schedules.models import Class, Group, Teacher, Student, Date
-from bs4 import BeautifulSoup as bs4
+from os import listdir
+from bs4 import BeautifulSoup as bs
 from datetime import datetime, timedelta
 
 # Create your views here.
@@ -42,7 +43,9 @@ def register(request):
         except ObjectDoesNotExist:
             student = Student(student_name=name)
             student.save()
-        soup = bs4(rawSchedule)
+        if not rawSchedule:
+            rawSchedule = request.FILES['rawSchedule.html'].read()
+        soup = bs(rawSchedule)
         table = soup.find('div', alink='#0000ff', vlink='#0000ff', style='background-color:#FFFFFF')
         if not table:
             table = soup.find('div', alink='#0000ff', vlink='#0000ff', style='background-color:white;')
@@ -110,3 +113,11 @@ def register(request):
                         for date_id in date_ids:
                             group.dates.add(Date.objects.get(id=date_id + 1))
         return HttpResponseRedirect(reverse('schedules:classes'))
+
+#def add_groups(request):
+#    for file_name in listdir('./groups/'):
+#        with open(file_name, encoding='ISO-8859-1') as file:
+#            soup = bs(file)
+#        groups = []
+#        group = []
+#        table = soup.find('table').find_all('table')[2]
