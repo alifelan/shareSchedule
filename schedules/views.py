@@ -49,7 +49,7 @@ def register(request):
             student.save()
         if not rawSchedule:
             rawSchedule = request.FILES['rawSchedule.html'].read()
-        soup = bs(rawSchedule)
+        soup = bs(rawSchedule, features="html.parser")
         table = soup.find('div', alink='#0000ff', vlink='#0000ff', style='background-color:#FFFFFF')
         if not table:
             table = soup.find('div', alink='#0000ff', vlink='#0000ff', style='background-color:white;')
