@@ -10,7 +10,11 @@ from datetime import datetime, timedelta
 # Create your views here.
 
 def index(request):
-    return HttpResponse('index')
+    return render(request, 'schedules/index.html')
+
+def students(request):
+    students = Student.objects.all()
+    return render(request, 'schedules/students.html', {'students':students})
 
 def classes(request):
     return render(request, 'schedules/classes.html', {'classes': Class.objects.all()})
