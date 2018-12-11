@@ -11,6 +11,7 @@ psycopg2 = "*"
 beautifulsoup4 = "*"
 pytz = "*"
 django-heroku = "*"
+gunicorn = "*"
 
 [requires]
 python_version = "3.6"
