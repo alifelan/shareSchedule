@@ -62,6 +62,8 @@ def register(request):
             table = soup.find('div', alink='#0000FF', vlink='#0000FF', style='background-color:#FFFFFF')
         if not table:
             table = soup.find('div', alink='#0000FF', vlink='#0000FF', style='background-color:ffffff')
+        if not table:
+            table = soup.find('div', id='contentDiv', class_='col-md-10 topPadding')
         table = table.find_all('center')[2].find('table').find('table')
         cl = []
         classes = []
@@ -106,6 +108,10 @@ def register(request):
                         if c != ' ':
                             days.append(i)
                     time = data[2].string.split(' a ')
+                    if time[0][0] == ' ':
+                        time[0] = time[0][1:]
+                    if time[1][0] == ' ':
+                        time[1] = time[1][1:]
                     fmt = '%H:%M'
                     split_time = time[0].split(':')
                     time_dec = int(split_time[0]) * 60 + int(split_time[1]) - 7 * 60

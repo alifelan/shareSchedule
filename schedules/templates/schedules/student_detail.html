@@ -7,5 +7,5 @@
 {% for group in groups %}
     <a href="{% url 'schedules:group_detail' group.class_id.class_id group.group_number %}"><p>{{ group }}</p></a>
 {% empty %}
-    <p> No hay grupos :() </p>
+    <p> No hay grupos :( </p>
 {% endfor %}
