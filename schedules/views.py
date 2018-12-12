@@ -9,6 +9,9 @@ from datetime import datetime, timedelta
 
 # Create your views here.
 
+def handler500(request):
+    return render(request, 'schedules/500.html')
+
 def index(request):
     return render(request, 'schedules/index.html')
 
