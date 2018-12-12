@@ -1,12 +1,12 @@
-<a href="{% url 'schedules:register' %}"><h1>Register</h1></a>
-<a href="{% url 'schedules:classes' %}"><h1>Classes</h1></a>
-<a href="{% url 'schedules:students' %}"><h1>Students</h1></a>
-<h1>Classes</h1>
+<a href="{% url 'schedules:register' %}"><h1>Agrega tu horario</h1></a>
+<a href="{% url 'schedules:classes' %}"><h1>Clases</h1></a>
+<a href="{% url 'schedules:students' %}"><h1>La bandera</h1></a>
+<h1>Clases</h1>
 {% if classes %}
-    <h3>Classes available: </h3>
+    <h3>Clases disponibles: </h3>
 {% endif %}
 {% for class_ in classes %}
     <a href="{% url 'schedules:class_detail' class_.class_id %}"><p>{{ class_ }}</p></a>
 {% empty %}
-    <p> No classes available </p>
+    <p> Ninguna prro </p>
 {% endfor %}
