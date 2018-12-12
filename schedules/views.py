@@ -44,6 +44,7 @@ def register(request):
     else:
         try:
             student = Student.objects.get(student_name=name)
+            student.enrolled_in.clear()
         except ObjectDoesNotExist:
             student = Student(student_name=name)
             student.save()
