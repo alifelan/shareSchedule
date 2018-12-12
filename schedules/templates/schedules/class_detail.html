@@ -1,4 +1,6 @@
+<a href="{% url 'schedules:register' %}"><h1>Register</h1></a>
 <a href="{% url 'schedules:classes' %}"><h1>Classes</h1></a>
+<a href="{% url 'schedules:students' %}"><h1>Students</h1></a>
 <h3>Current class: <a href="{% url 'schedules:class_detail' class_.class_id %}">{{ class_ }}</h3></a>
 {% if groups %}
     <h3>Groups:</h3>

@@ -118,6 +118,18 @@ def register(request):
                             group.dates.add(Date.objects.get(id=date_id + 1))
         return HttpResponseRedirect(reverse('schedules:classes'))
 
+def addDates():
+    Date.objects.all().delete()
+    days = [0, 1, 2, 3, 4, 5]
+    x = datetime(1,1,1,7)
+    for day in days:
+        for i in range(8):
+            time = (x + timedelta(hours=1, minutes=30) * i).time()
+            Date(day=day, time=time).save()
+        Date(day=day, time=datetime(1,1,1,18).time()).save()
+        Date(day=day, time=datetime(1,1,1,19,30).time()).save()
+
+
 #def add_groups(request):
 #    for file_name in listdir('./groups/'):
 #        with open(file_name, encoding='ISO-8859-1') as file:

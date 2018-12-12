@@ -1,5 +1,6 @@
+<a href="{% url 'schedules:register' %}"><h1>Register</h1></a>
 <a href="{% url 'schedules:classes' %}"><h1>Classes</h1></a>
-
+<a href="{% url 'schedules:students' %}"><h1>Students</h1></a>
 <h1>Students</h1>
 {% for student in students %}
     <a href="{% url 'schedules:student_detail' student.id %}"><p>{{ student }}</p></a>
