@@ -6,7 +6,7 @@
 <form action="{% url 'schedules:register' %}" method="post" id='register' enctype="multipart/form-data">
 {% csrf_token %}
 Nombre: <input type="text" name="name"><br>
-Pon uno de los siguientes xd
+Pon uno de los siguientes xd<br>
 Horario html copypasteado: <textarea form='register' rows=10 name="rawSchedule"></textarea><br>
 Horario html en archivo html: <input type='file' name='rawSchedule.html' accept='.html'>
 <input type="submit" value="Register">
