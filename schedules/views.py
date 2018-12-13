@@ -36,7 +36,13 @@ def group_detail(request, class_id, group_number):
 def student_detail(request, student_id):
     student = Student.objects.get(id=student_id)
     groups = student.enrolled_in.all()
-    return render(request, 'schedules/student_detail.html', {'student':student, 'groups':groups})
+    students_enrolled = {}
+    for group in groups:
+        students_enrolled[group.class_id.class_id] = []
+        for student_enrolled in Student.objects.filter(enrolled_in=group):
+            students_enrolled[group.class_id.class_id].append(student_enrolled)
+        students_enrolled[group.class_id.class_id].remove(student)
+    return render(request, 'schedules/student_detail.html', {'student':student, 'groups':groups, 'students_enrolled':students_enrolled})
 
 def register(request):
     try:
