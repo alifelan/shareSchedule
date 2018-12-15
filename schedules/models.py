@@ -16,7 +16,7 @@ class Class(models.Model):
     class_name = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.class_name
+        return "%s %s" % (self.class_id, self.class_name)
 
 
 
