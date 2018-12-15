@@ -51,12 +51,6 @@ def register(request):
     except KeyError:
         return render(request, 'schedules/register.html')
     else:
-        try:
-            student = Student.objects.get(student_name=name)
-            student.enrolled_in.clear()
-        except ObjectDoesNotExist:
-            student = Student(student_name=name)
-            student.save()
         if not rawSchedule:
             rawSchedule = request.FILES['rawSchedule.html'].read()
         soup = bs(rawSchedule, features="html.parser")
@@ -74,6 +68,12 @@ def register(request):
         if not table:
             table = soup.find('div', id='contentDiv', class_='col-md-10 topPadding')
         table = table.find_all('center')[2].find('table').find('table')
+        try:
+            student = Student.objects.get(student_name=name)
+            student.enrolled_in.clear()
+        except ObjectDoesNotExist:
+            student = Student(student_name=name)
+            student.save()
         cl = []
         classes = []
         for row in table.find_all('tr'):
