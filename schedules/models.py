@@ -19,7 +19,6 @@ class Class(models.Model):
         return "%s %s" % (self.class_id, self.class_name)
 
 
-
 class Date(models.Model):
     day = models.PositiveSmallIntegerField()
     time = models.TimeField()

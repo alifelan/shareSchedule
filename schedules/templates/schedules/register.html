@@ -1,16 +1,17 @@
-<a href="{% url 'schedules:register' %}"><h1>Agrega tu horario</h1></a>
-<a href="{% url 'schedules:classes' %}"><h1>Clases</h1></a>
-<a href="{% url 'schedules:students' %}"><h1>La bandera</h1></a>
-{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% extends "schedules/base.html" %}
+{% block content %}
+  {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-<form action="{% url 'schedules:register' %}" method="post" id='register' enctype="multipart/form-data">
-{% csrf_token %}
-Nombre: <input type="text" name="name"><br>
-Pon uno de los siguientes xd<br>
-Puedes guardar el horario que te muestra sidi en consultar tu horario o el de tu mail cuando lo envias con ctrl s<br>
-El copypasteado es mas feo xk es copiar todo el html y se laggea, no lo hagas<br>
-Fue lo primero que hice y me da flojera quitarlo :v<br>
-Horario html copypasteado: <textarea form='register' rows=10 name="rawSchedule"></textarea><br>
-Horario html en archivo html: <input type='file' name='rawSchedule.html' accept='.html'>
-<input type="submit" value="Register">
-</form>
+  <form action="{% url 'schedules:register' %}" method="post" id='register' enctype="multipart/form-data">
+  {% csrf_token %}
+  Nombre: <input type="text" name="name"><br>
+  Pon uno de los siguientes xd<br>
+  Puedes guardar el horario que te muestra sidi en consultar tu horario o el de tu mail cuando lo envias con ctrl s<br>
+  El copypasteado es mas feo xk es copiar todo el html y se laggea, no lo hagas<br>
+  Fue lo primero que hice y me da flojera quitarlo :v<br>
+  Horario html copypasteado: <textarea form='register' rows=10 name="rawSchedule"></textarea><br>
+  Horario html en archivo html: <input type='file' name='rawSchedule.html' accept='.html'>
+  <button class="btn waves-effect waves-light" type="submit" name="action">Registrar
+  </button>
+  </form>
+{% endblock %}
