@@ -1,12 +1,17 @@
+{% load static %}
+<script type="text/javascript" src="{% static 'schedules/js/filter_function.js' %}"></script>
+
+
 <a href="{% url 'schedules:register' %}"><h1>Agrega tu horario</h1></a>
 <a href="{% url 'schedules:classes' %}"><h1>Clases</h1></a>
 <a href="{% url 'schedules:students' %}"><h1>La bandera</h1></a>
 <h1>Clases</h1>
-{% if classes %}
-    <h3>Clases disponibles: </h3>
-{% endif %}
-{% for class_ in classes %}
-    <a href="{% url 'schedules:class_detail' class_.class_id %}"><p>{{ class_ }}</p></a>
-{% empty %}
-    <p> Ninguna prro </p>
-{% endfor %}
+<h3>Clases disponibles: </h3>
+<input type="text" id="searched" onkeyup="filter()" placeholder="Buscar clases">
+<div id="classes">
+  {% for class_ in classes %}
+      <p><a href="{% url 'schedules:class_detail' class_.class_id %}">{{ class_ }}</a></p>
+  {% empty %}
+      <p> Ninguna prro </p>
+  {% endfor %}
+</div>
