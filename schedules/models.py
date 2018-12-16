@@ -25,7 +25,7 @@ class Date(models.Model):
     time = models.TimeField()
 
     def __str__(self):
-        return list(calendar.day_name)[self.day] + ' at ' + str(self.time)
+        return "%s a las %s" % (list(calendar.day_name)[self.day], self.time)
 
     class Meta:
         unique_together = (("day", "time"),)
@@ -40,7 +40,7 @@ class Group(models.Model):
     dates = models.ManyToManyField(Date)
 
     def __str__(self):
-        return self.class_id.class_name + ' group ' + str(self.group_number)
+        return "%s %s grupo %s" % (self.class_id.class_id, self.class_id.class_name, self.group_number)
 
     class Meta:
         unique_together = (("group_number", "class_id", "semester"),)
