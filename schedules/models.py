@@ -23,7 +23,7 @@ class Date(models.Model):
     time = models.TimeField()
 
     def __str__(self):
-        day_names = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo']
+        day_names = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado']
         return "%s a las %s" % (day_names[self.day], self.time.strftime("%H:%M"))
 
     class Meta:
