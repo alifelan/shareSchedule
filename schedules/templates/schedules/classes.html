@@ -3,10 +3,18 @@
 
   <h1>Clases</h1>
   <h3>Clases disponibles: </h3>
-  <input type="text" id="searched" onkeyup="filter()" placeholder="Buscar clases">
+
+  <div class="nav-wrapper">
+    <div class="input-field">
+      <input id="search" type="search" onkeyup="filter()" placeholder="Buscar clases">
+      <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+      <i class="material-icons">close</i>
+    </div>
+  </div>
+
   <div id="classes">
     {% for class_ in classes %}
-        <div class="card-panel hoverable"><a href="{% url 'schedules:class_detail' class_.class_id %}">{{ class_ }}</a></div>
+        <a href="{% url 'schedules:class_detail' class_.class_id %}"><div class="card-panel hoverable">{{ class_ }}</div></a>
     {% empty %}
         <p> Ninguna prro </p>
     {% endfor %}

@@ -8,9 +8,19 @@
       <div class="card-content white-text">
         <span class="card-title"><a href="{% url 'schedules:group_detail' group.class_id.class_id group.group_number %}">{{ group }}</a></span>
         <p>
-          <b>Maestro(s):</b>
+          <b>
+            {% if group.teachers.all|length > 1 %}
+              Maestros:
+            {% else %}
+              Maestro:
+            {% endif %}
+          </b>
           {% for teacher in group.teachers.all %}
-            {{ teacher }}
+            {% if forloop.first %}
+              {{ teacher }}
+            {% else %}
+              , {{ teacher }}
+            {% endif %}
           {% endfor %}
         </p>
       </div>

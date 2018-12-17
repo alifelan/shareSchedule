@@ -6,6 +6,8 @@
     <!--Import materialize.css-->
     <link type="text/css" rel="stylesheet" href="{% static 'schedules/css/materialize.min.css' %}"  media="screen,projection"/>
 
+    <link type="text/css" rel="stylesheet" href="{% static 'schedules/css/custom.css' %}">
+
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
@@ -14,13 +16,20 @@
   </head>
 
   <body>
-    <h1><a href="{% url 'schedules:register' %}">Agrega tu horario</a></h1>
-    <h1><a href="{% url 'schedules:classes' %}">Clases</a></h1>
-    <h1><a href="{% url 'schedules:students' %}">La bandera</a></h1>
-
-    {% block content %}
-    {% endblock %}
-
+    <nav>
+      <div class="nav-wrapper">
+        <a href="{% url 'schedules:index' %}" class="brand-logo"><i class="material-icons">home</i>ShareSchedule</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          <li><a href="{% url 'schedules:register' %}">Agrega tu horario</a></li>
+          <li><a href="{% url 'schedules:classes' %}">Clases</a></li>
+          <li><a href="{% url 'schedules:students' %}">La bandera</a></li>
+        </ul>
+      </div>
+    </nav>
+    <div class="global">
+      {% block content %}
+      {% endblock %}
+    </div>
     <!--JavaScript at end of body for optimized loading-->
     <script type="text/javascript" src="{% static 'schedules/js/materialize.min.js' %}"></script>
   </body>

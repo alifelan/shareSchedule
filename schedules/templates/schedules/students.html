@@ -2,7 +2,7 @@
 {% block content %}
   <h1>Raza registrada en la pagina</h1>
   {% for student in students %}
-      <div class="card-panel hoverable"><a href="{% url 'schedules:student_detail' student.id %}">{{ student }}</a></div>
+      <a href="{% url 'schedules:student_detail' student.id %}"><div class="card-panel hoverable">{{ student }}</div></a>
   {% empty %}
       <p> No hay raza aun gg </p>
   {% endfor %}
