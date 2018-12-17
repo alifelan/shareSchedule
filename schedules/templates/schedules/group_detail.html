@@ -1,9 +1,11 @@
+{% extends "schedules/base.html" %}
+{% block content %}
+  <h3>Clase actual: <a href="{% url 'schedules:class_detail' class_.class_id %}">{{ class_ }}</h3></a>
+  <h3>Grupo actual: <a href="{% url 'schedules:group_detail' class_.class_id group.group_number %}">{{ group }}</h3></a>
 
-<h3>Clase actual: <a href="{% url 'schedules:class_detail' class_.class_id %}">{{ class_ }}</h3></a>
-<h3>Grupo actual: <a href="{% url 'schedules:group_detail' class_.class_id group.group_number %}">{{ group }}</h3></a>
-
-{% for student in students_enrolled %}
-    <a href="{% url 'schedules:student_detail' student.id %}"><p>{{ student }}</p></a>
-{% empty %}
-    <p> Nadie se metio xdxd </p>
-{% endfor %}
+  {% for student in students_enrolled %}
+      <a href="{% url 'schedules:student_detail' student.id %}" class="link-card"><div class="card-panel hoverable">{{ student }}</div></a>
+  {% empty %}
+      <p> Nadie se metio xdxd </p>
+  {% endfor %}
+{% endblock %}

@@ -5,7 +5,7 @@
       <h3>Grupos:</h3>
   {% endif %}
   {% for group in groups %}
-      <div class="card-panel hoverable"><a href="{% url 'schedules:group_detail' class_.class_id group.group_number %}">{{ group }}</a></div>
+      <div class="card-panel hoverable"><a href="{% url 'schedules:group_detail' class_.class_id group.group_number %}" class="link-card">{{ group }}</a></div>
   {% empty %}
       <p> No hay grupos </p>
   {% endfor %}

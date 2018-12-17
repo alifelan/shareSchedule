@@ -14,7 +14,7 @@
 
   <div id="classes">
     {% for class_ in classes %}
-        <a href="{% url 'schedules:class_detail' class_.class_id %}"><div class="card-panel hoverable">{{ class_ }}</div></a>
+        <a href="{% url 'schedules:class_detail' class_.class_id %}" class="link-card"><div class="card-panel hoverable">{{ class_ }}</div></a>
     {% empty %}
         <p> Ninguna prro </p>
     {% endfor %}
