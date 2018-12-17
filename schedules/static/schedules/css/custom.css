@@ -10,3 +10,43 @@
 .global {
   padding-left: 40px;
 }
+
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.inputfile + label {
+    font-size: 14px;
+    font-weight: 700;
+    color: white;
+    background-color: #ee6e73;
+    display: inline-block;
+}
+
+.inputfile:focus + label,
+.inputfile + label:hover {
+    background-color: #ee6e73;
+}
+
+.inputfile + label {
+	cursor: pointer; /* "hand" cursor */
+}
+
+.inputfile:focus + label {
+	outline: 1px dotted #000;
+	outline: -webkit-focus-ring-color auto 5px;
+}
+
+label {
+  outline: 0;
+  font: Arial;
+  height: 36px;
+  line-height: 36px;
+  padding: 0 16px;
+  letter-spacing: .5px;
+}

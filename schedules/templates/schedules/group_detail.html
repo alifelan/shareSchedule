@@ -4,7 +4,7 @@
   <h3>Grupo actual: <a href="{% url 'schedules:group_detail' class_.class_id group.group_number %}">{{ group }}</h3></a>
 
   {% for student in students_enrolled %}
-      <a href="{% url 'schedules:student_detail' student.id %}" class="link-card"><div class="card-panel hoverable">{{ student }}</div></a>
+      <a href="{% url 'schedules:student_detail' student.id %}" class="waves-effect waves-light btn"><i class="material-icons left">face</i>{{ student }}</a>
   {% empty %}
       <p> Nadie se metio xdxd </p>
   {% endfor %}

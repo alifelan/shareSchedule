@@ -1,17 +1,35 @@
 {% extends "schedules/base.html" %}
 {% block content %}
+  <h3>Registrar horario</h3>
   {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
   <form action="{% url 'schedules:register' %}" method="post" id='register' enctype="multipart/form-data">
   {% csrf_token %}
   Nombre: <input type="text" name="name"><br>
-  Pon uno de los siguientes xd<br>
-  Puedes guardar el horario que te muestra sidi en consultar tu horario o el de tu mail cuando lo envias con ctrl s<br>
-  El copypasteado es mas feo xk es copiar todo el html y se laggea, no lo hagas<br>
-  Fue lo primero que hice y me da flojera quitarlo :v<br>
-  Horario html copypasteado: <textarea form='register' rows=10 name="rawSchedule"></textarea><br>
-  Horario html en archivo html: <input type='file' name='rawSchedule.html' accept='.html'>
+  Descarga tu horario como html, puedes hacerlo con ctrl + s <br>
+  Horario html en archivo html: <input type='file' name='file' id="file" class="inputfile" onchange="update_file_input()" accept='.html'>
+  <label id="inputfilelabel" for="file">Selecciona tu horario</label>
+  <br>
   <button class="btn waves-effect waves-light" type="submit" name="action">Registrar
   </button>
   </form>
+
+  <script type="text/javascript">
+    function update_file_input() {
+      var input = document.getElementById('file');
+    	var label = document.getElementById('inputfilelabel'),
+  		labelVal = 'Selecciona tu horario'
+
+  		var fileName = '';
+  		if( this.files && this.files.length > 1 )
+  			fileName = ( this.getAttribute( 'data-multiple-caption' ) || '' ).replace( '{count}', this.files.length );
+  		else
+  			fileName = input.value.split(/(\\|\/)/g).pop();
+
+  		if( fileName )
+  			label.innerHTML = fileName;
+  		else
+  			label.innerHTML = labelVal;
+    }
+  </script>
 {% endblock %}
