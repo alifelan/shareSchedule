@@ -1,6 +1,6 @@
 {% extends "schedules/base.html" %}
 {% block content %}
-  <h1>Raza registrada en la pagina</h1>
+  <h3>Raza registrada en la pagina</h3>
   {% for student in students %}
       <a href="{% url 'schedules:student_detail' student.id %}" class="link-card"><div class="card-panel hoverable">{{ student }}</div></a>
   {% empty %}

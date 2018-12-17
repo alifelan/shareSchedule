@@ -1,5 +1,4 @@
 from django.db import models
-import calendar
 
 # Create your models here.
 
@@ -24,7 +23,8 @@ class Date(models.Model):
     time = models.TimeField()
 
     def __str__(self):
-        return "%s a las %s" % (list(calendar.day_name)[self.day], self.time)
+        day_names = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo']
+        return "%s a las %s" % (day_names[self.day], self.time.strftime("%H:%M"))
 
     class Meta:
         unique_together = (("day", "time"),)

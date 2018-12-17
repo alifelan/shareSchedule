@@ -25,7 +25,12 @@ def classes(request):
 def class_detail(request, class_id):
     current_class = Class.objects.get(class_id=class_id)
     groups = Group.objects.filter(class_id=current_class)
-    return render(request, 'schedules/class_detail.html', {'class_': current_class, 'groups':groups})
+    students_enrolled= {}
+    for group in groups:
+        students_enrolled[group.group_number] = []
+        for student_enrolled in Student.objects.filter(enrolled_in=group):
+            students_enrolled[group.group_number].append(student_enrolled)
+    return render(request, 'schedules/class_detail.html', {'class_': current_class, 'groups':groups, 'students_enrolled':students_enrolled})
 
 def group_detail(request, class_id, group_number):
     current_class = Class.objects.get(class_id=class_id)
