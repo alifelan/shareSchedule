@@ -7,7 +7,7 @@
   {% csrf_token %}
   Nombre: <input type="text" name="name"><br>
   Descarga tu horario como html, puedes hacerlo con ctrl + s <br>
-  Horario html en archivo html: <input type='file' name='file' id="file" class="inputfile" onchange="update_file_input()" accept='.html'>
+  Horario html en archivo html: <input type='file' name='rawSchedule.html' id="file" class="inputfile" onchange="update_file_input()" accept='.html'>
   <label id="inputfilelabel" for="file">Selecciona tu horario</label>
   <br>
   <button class="btn waves-effect waves-light" type="submit" name="action">Registrar

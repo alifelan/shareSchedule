@@ -51,13 +51,11 @@ def student_detail(request, student_id):
 
 def register(request):
     try:
-        rawSchedule = request.POST['rawSchedule']
+        rawSchedule = request.FILES['rawSchedule.html'].read()
         name = request.POST['name']
     except KeyError:
         return render(request, 'schedules/register.html')
     else:
-        if not rawSchedule:
-            rawSchedule = request.FILES['rawSchedule.html'].read()
         soup = bs(rawSchedule, features="html.parser")
         table = soup.find('div', alink='#0000ff', vlink='#0000ff', style='background-color:#FFFFFF')
         if not table:
@@ -137,7 +135,7 @@ def register(request):
                     if (datetime.strptime(time[1], fmt) - datetime.strptime(time[0], fmt)).seconds // 60 > 90:
                         for date_id in date_ids:
                             group.dates.add(Date.objects.get(id=date_id + 1))
-        return HttpResponseRedirect(reverse('schedules:classes'))
+        return HttpResponseRedirect(reverse('schedules:students'))
 
 def addDates():
     Date.objects.all().delete()
