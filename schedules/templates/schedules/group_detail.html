@@ -1,4 +1,5 @@
 {% extends "schedules/base.html" %}
+{% block title %}{{ class_.class_id }}.{{ group.group_number }}{% endblock %}
 {% block content %}
   <h3>Clase actual: <a href="{% url 'schedules:class_detail' class_.class_id %}">{{ class_ }}</h3></a>
   <h3>Grupo actual: <a href="{% url 'schedules:group_detail' class_.class_id group.group_number %}">{{ group }}</h3></a>
