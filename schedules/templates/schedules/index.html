@@ -1,4 +1,6 @@
 {% extends "schedules/base.html" %}
 {% block content %}
-  No hay nada que hacer aqui compa
+  <a href="{% url 'schedules:register' %}">Agrega tu horario</a><br>
+  <a href="{% url 'schedules:classes' %}">Clases</a><br>
+  <a href="{% url 'schedules:students' %}">La bandera</a><br>
 {% endblock %}
