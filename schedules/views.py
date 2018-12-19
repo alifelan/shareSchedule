@@ -69,6 +69,8 @@ def register(request):
         if not table:
             table = soup.find('div', alink='#0000FF', vlink='#0000FF', style='background-color:ffffff')
         if not table:
+            table = soup.find('div', alink='#0000ff', vlink='#0000ff', bgcolor="#FFFFFF")
+        if not table:
             table = soup.find('div', id='contentDiv', class_='col-md-10 topPadding')
         table = table.find_all('center')[2].find('table').find('table')
         try:
