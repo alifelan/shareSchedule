@@ -129,7 +129,7 @@ def register(request):
                     fmt = '%H:%M'
                     split_time = time[0].split(':')
                     time_dec = int(split_time[0]) * 60 + int(split_time[1]) - 7 * 60
-                    time_id = time_dec // 90 if time_dec % 90 == 0 else 9
+                    time_id = time_dec // 90 if time_dec % 90 == 0 else 8
                     date_ids = []
                     for day in days:
                         date_ids.append(11 + time_id + day * 10)
