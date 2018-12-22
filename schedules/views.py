@@ -150,7 +150,7 @@ def free_day(request, day_name):
         day_id = day_names.index(day_name.lower())
     except ValueError:
         return render(request, 'schedules/error.html', {'error_message':'Ese dia no existe prro'})
-    dates = Date.objects.all()[1 + day_id * 10:(day_id + 1) * 10]
+    dates = Date.objects.all()[day_id * 10:(day_id + 1) * 10]
     students = Student.objects.all()
     students_free = []
     for date in dates:
