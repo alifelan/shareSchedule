@@ -1,0 +1,8 @@
+{% extends "schedules/base.html" %}
+{% block title %}Libres{% endblock %}
+{% block content %}
+  <h3>Libres</h3>
+    {% for day_name in day_names %}
+      <h4><a href="{% url 'schedules:free_day' day_name %}">{{ day_name }}</a></h4>
+    {% endfor %}
+{% endblock %}

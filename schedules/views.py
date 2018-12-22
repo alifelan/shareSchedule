@@ -141,7 +141,8 @@ def register(request):
 
 
 def free(request):
-    return render(request, 'schedules/base.html')
+    day_names = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado']
+    return render(request, 'schedules/free.html', {'day_names':day_names})
 
 
 def free_day(request, day_name):
