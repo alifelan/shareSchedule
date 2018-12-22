@@ -118,7 +118,7 @@ def register(request):
                 elif l['align'] == 'center' and (l['bgcolor'] == '#EEEEEE' or l['bgcolor'] == '#eeeeee'):
                     data = l.find_all('code')
                     days = []
-                    for i, c in enumerate(data[1].string[1:].replace('\xa0', ' ')):
+                    for i, c in enumerate(data[1].string.replace('\xa0', ' ')):
                         if c != ' ':
                             days.append(i)
                     time = data[2].string.split(' a ')
@@ -132,12 +132,35 @@ def register(request):
                     time_id = time_dec // 90 if time_dec % 90 == 0 else 8
                     date_ids = []
                     for day in days:
-                        date_ids.append(11 + time_id + day * 10)
+                        date_ids.append(1 + time_id + day * 10)
                         group.dates.add(Date.objects.get(id=date_ids[-1]))
                     if (datetime.strptime(time[1], fmt) - datetime.strptime(time[0], fmt)).seconds // 60 > 90:
                         for date_id in date_ids:
                             group.dates.add(Date.objects.get(id=date_id + 1))
         return HttpResponseRedirect(reverse('schedules:student_detail', kwargs={'student_id': student.id}))
+
+
+def free(request):
+    return render(request, 'schedules/base.html')
+
+
+def free_day(request, day_name):
+    day_names = ['domingo', 'lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado']
+    try:
+        day_id = day_names.index(day_name.lower())
+    except ValueError:
+        return render(request, 'schedules/error.html', {'error_message':'Ese dia no existe prro'})
+    dates = Date.objects.all()[1 + day_id * 10:(day_id + 1) * 10]
+    students = Student.objects.all()
+    students_free = []
+    for date in dates:
+        students_in_class = []
+        for group in date.groups.all():
+            students_in_class.extend(list(group.students.all()))
+        students_free.append(list(set(students) - set(students_in_class)))
+    students_free_at_date = zip(dates, students_free)
+    return render(request, 'schedules/free_day.html', {'day_name':day_name, 'students_free_at_date':students_free_at_date})
+
 
 def addDates():
     Date.objects.all().delete()

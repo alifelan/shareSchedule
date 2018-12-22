@@ -33,10 +33,10 @@ class Date(models.Model):
 class Group(models.Model):
     class_id = models.ForeignKey(Class, on_delete=models.CASCADE)
     group_number = models.IntegerField()
-    teachers = models.ManyToManyField(Teacher)
+    teachers = models.ManyToManyField(Teacher, related_name='groups')
     #classroom = models.CharField(max_length=10)
     semester = models.CharField(max_length=6)
-    dates = models.ManyToManyField(Date)
+    dates = models.ManyToManyField(Date, related_name='groups')
 
     def __str__(self):
         return "%s %s grupo %s" % (self.class_id.class_id, self.class_id.class_name, self.group_number)
@@ -47,7 +47,7 @@ class Group(models.Model):
 
 class Student(models.Model):
     student_name = models.CharField(max_length=40)
-    enrolled_in = models.ManyToManyField(Group)
+    enrolled_in = models.ManyToManyField(Group, related_name='students')
 
     def __str__(self):
         return self.student_name
