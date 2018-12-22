@@ -137,7 +137,7 @@ def register(request):
                     if (datetime.strptime(time[1], fmt) - datetime.strptime(time[0], fmt)).seconds // 60 > 90:
                         for date_id in date_ids:
                             group.dates.add(Date.objects.get(id=date_id + 1))
-        return HttpResponseRedirect(reverse('schedules:students'))
+        return HttpResponseRedirect(reverse('schedules:student_detail', kwargs={'student_id': student.id}))
 
 def addDates():
     Date.objects.all().delete()
