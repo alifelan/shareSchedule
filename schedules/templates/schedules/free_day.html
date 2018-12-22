@@ -1,19 +1,25 @@
 {% extends "schedules/base.html" %}
 {% block title %}Libres el {{ day_name }}{% endblock %}
 {% block content %}
-  <h3>{{ day_name }}</h3>
-    {% for date, students_free in students_free_at_date %}
-        <div class="card blue-grey darken-1">
-          <div class="card-content white-text">
-            <span class="card-title">{{ date }}</span>
-          </div>
-          <div class="card-action">
-            {% for student in students_free %}
-              <a href="{% url 'schedules:student_detail' student.id %}">{{ student }}</a>
-            {% empty %}
-              <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Todos ocupados xddd</a>
-            {% endfor %}
-          </div>
-        </div>
-      {% endfor %}
+  <ul class="pagination">
+    <li class="{% if day_id == 1 %}active{% else %}waves-effect{% endif %}"><a href="{% url 'schedules:free_day' 'lunes' %}">Lunes</a></li>
+    <li class="{% if day_id == 2 %}active{% else %}waves-effect{% endif %}"><a href="{% url 'schedules:free_day' 'martes' %}">Martes</a></li>
+    <li class="{% if day_id == 3 %}active{% else %}waves-effect{% endif %}"><a href="{% url 'schedules:free_day' 'miercoles' %}">Miercoles</a></li>
+    <li class="{% if day_id == 4 %}active{% else %}waves-effect{% endif %}"><a href="{% url 'schedules:free_day' 'jueves' %}">Jueves</a></li>
+    <li class="{% if day_id == 5 %}active{% else %}waves-effect{% endif %}"><a href="{% url 'schedules:free_day' 'viernes' %}">Viernes</a></li>
+  </ul>
+  {% for date, students_free in students_free_at_date %}
+    <div class="card blue-grey darken-1">
+      <div class="card-content white-text">
+        <span class="card-title">{{ date }}</span>
+      </div>
+      <div class="card-action">
+        {% for student in students_free %}
+          <a href="{% url 'schedules:student_detail' student.id %}">{{ student }}</a>
+        {% empty %}
+          <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Todos ocupados xddd</a>
+        {% endfor %}
+      </div>
+    </div>
+  {% endfor %}
 {% endblock %}

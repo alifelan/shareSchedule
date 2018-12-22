@@ -160,7 +160,8 @@ def free_day(request, day_name):
             students_in_class.extend(list(group.students.all()))
         students_free.append(list(set(students) - set(students_in_class)))
     students_free_at_date = zip(dates, students_free)
-    return render(request, 'schedules/free_day.html', {'day_name':day_name, 'students_free_at_date':students_free_at_date})
+    day = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'][day_id]
+    return render(request, 'schedules/free_day.html', {'day_name':day, 'students_free_at_date':students_free_at_date, 'day_id':day_id})
 
 
 def addDates():
