@@ -118,7 +118,7 @@ def register(request):
                 elif l['align'] == 'center' and (l['bgcolor'] == '#EEEEEE' or l['bgcolor'] == '#eeeeee'):
                     data = l.find_all('code')
                     days = []
-                    for i, c in enumerate(data[1].string[1:].replace('\xa0', ' ')):
+                    for i, c in enumerate(data[1].string.replace('\xa0', ' ')):
                         if c != ' ':
                             days.append(i)
                     time = data[2].string.split(' a ')
@@ -132,7 +132,7 @@ def register(request):
                     time_id = time_dec // 90 if time_dec % 90 == 0 else 8
                     date_ids = []
                     for day in days:
-                        date_ids.append(11 + time_id + day * 10)
+                        date_ids.append(1 + time_id + day * 10)
                         group.dates.add(Date.objects.get(id=date_ids[-1]))
                     if (datetime.strptime(time[1], fmt) - datetime.strptime(time[0], fmt)).seconds // 60 > 90:
                         for date_id in date_ids:
