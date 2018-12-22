@@ -10,4 +10,6 @@ urlpatterns = [
     path('class/', views.classes, name='classes'),
     path('class/<str:class_id>/', views.class_detail, name='class_detail'),
     path('class/<str:class_id>/<int:group_number>/', views.group_detail, name='group_detail'),
+    path('free/', views.free, name='free'),
+    path('free/<str:day_name>/', views.free_day, name='free_day'),
 ]
