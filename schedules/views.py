@@ -1,3 +1,4 @@
+"""App views."""
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
@@ -9,36 +10,57 @@ from datetime import datetime, timedelta
 
 # Create your views here.
 
+
 def handler500(request):
+    """Render error 500 html."""
     return render(request, 'schedules/500.html')
 
+
 def index(request):
+    """Render index html."""
     return render(request, 'schedules/index.html')
 
+
 def students(request):
+    """Render students html."""
     students = Student.objects.all()
-    return render(request, 'schedules/students.html', {'students':students})
+    return render(request, 'schedules/students.html', {'students': students})
+
 
 def classes(request):
-    return render(request, 'schedules/classes.html', {'classes': Class.objects.all()})
+    """Render classes html."""
+    return render(request, 'schedules/classes.html',
+                  {'classes': Class.objects.all()})
+
 
 def class_detail(request, class_id):
+    """Render class details html."""
     current_class = Class.objects.get(class_id=class_id)
     groups = Group.objects.filter(class_id=current_class)
-    students_enrolled= {}
+    students_enrolled = {}
     for group in groups:
         students_enrolled[group.group_number] = []
         for student_enrolled in Student.objects.filter(enrolled_in=group):
             students_enrolled[group.group_number].append(student_enrolled)
-    return render(request, 'schedules/class_detail.html', {'class_': current_class, 'groups':groups, 'students_enrolled':students_enrolled})
+    return render(request, 'schedules/class_detail.html', {
+                  'class_': current_class, 'groups': groups,
+                  'students_enrolled': students_enrolled})
+
 
 def group_detail(request, class_id, group_number):
+    """Render group details html."""
     current_class = Class.objects.get(class_id=class_id)
-    group = Group.objects.get(class_id=current_class, group_number=group_number)
-    students_enrolled = Student.objects.filter(enrolled_in=group)
-    return render(request, 'schedules/group_detail.html', {'class_':current_class, 'group':group, 'students_enrolled':students_enrolled})
+    group = Group.objects.get(class_id=current_class,
+                              group_number=group_number)
+    students_enrolled = group.students.all()
+    return render(request, 'schedules/group_detail.html', {
+        'class_': current_class, 'group': group,
+        'students_enrolled': students_enrolled
+    })
+
 
 def student_detail(request, student_id):
+    """Render student details html."""
     student = Student.objects.get(id=student_id)
     groups = student.enrolled_in.all()
     students_enrolled = {}
@@ -47,31 +69,43 @@ def student_detail(request, student_id):
         for student_enrolled in Student.objects.filter(enrolled_in=group):
             students_enrolled[group.class_id.class_id].append(student_enrolled)
         students_enrolled[group.class_id.class_id].remove(student)
-    return render(request, 'schedules/student_detail.html', {'student':student, 'groups':groups, 'students_enrolled':students_enrolled})
+    return render(request, 'schedules/student_detail.html', {
+                  'student': student, 'groups': groups,
+                  'students_enrolled': students_enrolled})
+
 
 def register(request):
+    """Register user and render its page, or render register html."""
     try:
         rawSchedule = request.FILES['rawSchedule.html'].read()
-        name = request.POST['name']
+        name: str = request.POST['name']
     except KeyError:
         return render(request, 'schedules/register.html')
     else:
         soup = bs(rawSchedule, features="html.parser")
-        table = soup.find('div', alink='#0000ff', vlink='#0000ff', style='background-color:#FFFFFF')
+        table = soup.find('div', alink='#0000ff', vlink='#0000ff',
+                          style='background-color:#FFFFFF')
         if not table:
-            table = soup.find('div', alink='#0000ff', vlink='#0000ff', style='background-color:white;')
+            table = soup.find('div', alink='#0000ff', vlink='#0000ff',
+                              style='background-color:white;')
         if not table:
-            table = soup.find('div', alink='#0000FF', vlink='#0000FF', style='background-color:white;')
+            table = soup.find('div', alink='#0000FF', vlink='#0000FF',
+                              style='background-color:white;')
         if not table:
-            table = soup.find('div', alink='#0000ff', vlink='#0000ff', style='background-color:#ffffff')
+            table = soup.find('div', alink='#0000ff', vlink='#0000ff',
+                              style='background-color:#ffffff')
         if not table:
-            table = soup.find('div', alink='#0000FF', vlink='#0000FF', style='background-color:#FFFFFF')
+            table = soup.find('div', alink='#0000FF', vlink='#0000FF',
+                              style='background-color:#FFFFFF')
         if not table:
-            table = soup.find('div', alink='#0000FF', vlink='#0000FF', style='background-color:ffffff')
+            table = soup.find('div', alink='#0000FF', vlink='#0000FF',
+                              style='background-color:ffffff')
         if not table:
-            table = soup.find('div', alink='#0000ff', vlink='#0000ff', bgcolor="#FFFFFF")
+            table = soup.find('div', alink='#0000ff', vlink='#0000ff',
+                              bgcolor="#FFFFFF")
         if not table:
-            table = soup.find('div', id='contentDiv', class_='col-md-10 topPadding')
+            table = soup.find('div', id='contentDiv',
+                              class_='col-md-10 topPadding')
         table = table.find_all('center')[2].find('table').find('table')
         try:
             student = Student.objects.get(student_name=name)
@@ -99,23 +133,30 @@ def register(request):
                 class_name = class_text[class_text.find(' ') + 1:]
                 current_class = Class(class_id=class_id, class_name=class_name)
                 current_class.save()
-            class_group = class_text[class_text.find('.') + 1:class_text.find(' ')]
+            class_group = class_text[class_text.find('.')+1:
+                                     class_text.find(' ')]
             try:
-                group = Group.objects.get(class_id=current_class, group_number=class_group, semester='EM2019')
+                group = Group.objects.get(class_id=current_class,
+                                          group_number=class_group,
+                                          semester='EM2019')
             except ObjectDoesNotExist:
-                group = Group(class_id=current_class, group_number=class_group, semester='EM2019')
+                group = Group(class_id=current_class, group_number=class_group,
+                              semester='EM2019')
                 group.save()
             student.enrolled_in.add(group)
             for l in cl[1:]:
-                if l['align'] == 'left' and 'Atributo' not in l.find('code').string:
+                if (l['align'] == 'left'
+                        and 'Atributo' not in l.find('code').string):
                     teacher_name = l.find_all('code')[1].contents[0]
                     try:
-                        teacher = Teacher.objects.get(teacher_name=teacher_name)
+                        teacher = (
+                            Teacher.objects.get(teacher_name=teacher_name))
                     except ObjectDoesNotExist:
                         teacher = Teacher(teacher_name=teacher_name)
                         teacher.save()
                     group.teachers.add(teacher)
-                elif l['align'] == 'center' and (l['bgcolor'] == '#EEEEEE' or l['bgcolor'] == '#eeeeee'):
+                elif (l['align'] == 'center' and (l['bgcolor'] == '#EEEEEE' or
+                                                  l['bgcolor'] == '#eeeeee')):
                     data = l.find_all('code')
                     days = []
                     for i, c in enumerate(data[1].string.replace('\xa0', ' ')):
@@ -128,29 +169,37 @@ def register(request):
                         time[1] = time[1][1:]
                     fmt = '%H:%M'
                     split_time = time[0].split(':')
-                    time_dec = int(split_time[0]) * 60 + int(split_time[1]) - 7 * 60
+                    time_dec = (int(split_time[0]) * 60
+                                + int(split_time[1]) - 7 * 60)
                     time_id = time_dec // 90 if time_dec % 90 == 0 else 8
                     date_ids = []
                     for day in days:
                         date_ids.append(1 + time_id + day * 10)
                         group.dates.add(Date.objects.get(id=date_ids[-1]))
-                    if (datetime.strptime(time[1], fmt) - datetime.strptime(time[0], fmt)).seconds // 60 > 90:
+                    if (datetime.strptime(time[1], fmt)
+                            - (datetime.strptime(time[0], fmt)).seconds // 60
+                            > 90):
                         for date_id in date_ids:
                             group.dates.add(Date.objects.get(id=date_id + 1))
-        return HttpResponseRedirect(reverse('schedules:student_detail', kwargs={'student_id': student.id}))
+        return HttpResponseRedirect(reverse('schedules:student_detail',
+                                            kwargs={'student_id': student.id}))
 
 
 def free(request):
+    """Render free html."""
     day_names = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado']
-    return render(request, 'schedules/free.html', {'day_names':day_names})
+    return render(request, 'schedules/free.html', {'day_names': day_names})
 
 
 def free_day(request, day_name):
-    day_names = ['domingo', 'lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado']
+    """Render free day html."""
+    day_names = ['domingo', 'lunes', 'martes', 'miercoles', 'jueves',
+                 'viernes', 'sabado']
     try:
         day_id = day_names.index(day_name.lower())
     except ValueError:
-        return render(request, 'schedules/error.html', {'error_message':'Ese dia no existe prro'})
+        return render(request, 'schedules/error.html',
+                      {'error_message': 'Ese dia no existe prro'})
     dates = Date.objects.all()[day_id * 10:(day_id + 1) * 10]
     students = Student.objects.all()
     students_free = []
@@ -160,23 +209,29 @@ def free_day(request, day_name):
             students_in_class.extend(list(group.students.all()))
         students_free.append(list(set(students) - set(students_in_class)))
     students_free_at_date = zip(dates, students_free)
-    day = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'][day_id]
-    return render(request, 'schedules/free_day.html', {'day_name':day, 'students_free_at_date':students_free_at_date, 'day_id':day_id})
+    days = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes',
+            'Sabado']
+    day = days[day_id]
+    return render(request, 'schedules/free_day.html', {'day_name': day,
+                                                       'students_free_at_date':
+                                                       students_free_at_date,
+                                                       'day_id': day_id})
 
 
 def addDates():
+    """Add dates to database."""
     Date.objects.all().delete()
     days = [0, 1, 2, 3, 4, 5]
-    x = datetime(1,1,1,7)
+    x = datetime(1, 1, 1, 7)
     for day in days:
         for i in range(8):
             time = (x + timedelta(hours=1, minutes=30) * i).time()
             Date(day=day, time=time).save()
-        Date(day=day, time=datetime(1,1,1,18).time()).save()
-        Date(day=day, time=datetime(1,1,1,19,30).time()).save()
+        Date(day=day, time=datetime(1, 1, 1, 18).time()).save()
+        Date(day=day, time=datetime(1, 1, 1, 19, 30).time()).save()
 
 
-#def add_groups(request):
+# def add_groups(request):
 #    for file_name in listdir('./groups/'):
 #        with open(file_name, encoding='ISO-8859-1') as file:
 #            soup = bs(file)
