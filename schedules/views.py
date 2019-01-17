@@ -65,6 +65,9 @@ def register(request):
     try:
         rawSchedule = request.FILES['rawSchedule.html'].read()
         name: str = request.POST['name']
+        if not name:
+            return render(request, 'schedules/register.html', {
+                'error_message': 'Tu nombre esta vacio'})
     except KeyError:
         return render(request, 'schedules/register.html')
     else:
