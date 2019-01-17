@@ -9,4 +9,8 @@
   {% empty %}
       <p> Nadie se metio xdxd </p>
   {% endfor %}
+  <h3>Tarea: </h3>
+  {% for hw in group.homework.all %}
+    <p>{% hw %}</p>
+  {% endfor %}
 {% endblock %}
