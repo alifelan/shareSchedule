@@ -1,10 +1,9 @@
 """App views."""
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.core.exceptions import ObjectDoesNotExist
 from schedules.models import Class, Group, Teacher, Student, Date
-from os import listdir
 from bs4 import BeautifulSoup as bs
 from datetime import datetime, timedelta
 
@@ -36,15 +35,8 @@ def classes(request):
 def class_detail(request, class_id):
     """Render class details html."""
     current_class = Class.objects.get(class_id=class_id)
-    groups = Group.objects.filter(class_id=current_class)
-    students_enrolled = {}
-    for group in groups:
-        students_enrolled[group.group_number] = []
-        for student_enrolled in Student.objects.filter(enrolled_in=group):
-            students_enrolled[group.group_number].append(student_enrolled)
     return render(request, 'schedules/class_detail.html', {
-                  'class_': current_class, 'groups': groups,
-                  'students_enrolled': students_enrolled})
+                  'class_': current_class})
 
 
 def group_detail(request, class_id, group_number):
@@ -52,26 +44,20 @@ def group_detail(request, class_id, group_number):
     current_class = Class.objects.get(class_id=class_id)
     group = Group.objects.get(class_id=current_class,
                               group_number=group_number)
-    students_enrolled = group.students.all()
-    return render(request, 'schedules/group_detail.html', {
-        'class_': current_class, 'group': group,
-        'students_enrolled': students_enrolled
-    })
+    return render(request, 'schedules/group_detail.html', {'group': group})
 
 
 def student_detail(request, student_id):
     """Render student details html."""
     student = Student.objects.get(id=student_id)
-    groups = student.enrolled_in.all()
     students_enrolled = {}
-    for group in groups:
+    for group in student.enrolled_in.all():
         students_enrolled[group.class_id.class_id] = []
         for student_enrolled in Student.objects.filter(enrolled_in=group):
             students_enrolled[group.class_id.class_id].append(student_enrolled)
         students_enrolled[group.class_id.class_id].remove(student)
     return render(request, 'schedules/student_detail.html', {
-                  'student': student, 'groups': groups,
-                  'students_enrolled': students_enrolled})
+                  'student': student, 'students_enrolled': students_enrolled})
 
 
 def register(request):

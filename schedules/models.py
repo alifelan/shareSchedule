@@ -47,7 +47,8 @@ class Date(models.Model):
 class Group(models.Model):
     """Group model."""
 
-    class_id = models.ForeignKey(Class, on_delete=models.CASCADE)
+    class_id = models.ForeignKey(Class, related_name='groups',
+                                 on_delete=models.CASCADE)
     group_number = models.IntegerField()
     teachers = models.ManyToManyField(Teacher, related_name='groups')
     # classroom = models.CharField(max_length=10)
@@ -63,6 +64,18 @@ class Group(models.Model):
         """Meta."""
 
         unique_together = (("group_number", "class_id", "semester"),)
+
+
+class Homework(models.Model):
+    """Homework model."""
+
+    text = models.TextField()
+    group_id = models.ForeignKey(Group, related_name='Homework',
+                                 on_delete=models.CASCADE)
+
+    def __str__(self):
+        """Return string."""
+        return "%s" % (self.text)
 
 
 class Student(models.Model):

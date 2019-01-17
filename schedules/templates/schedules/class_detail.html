@@ -5,7 +5,7 @@
   {% if groups %}
       <h3>Grupos:</h3>
   {% endif %}
-  {% for group in groups %}
+  {% for group in class_.groups.all %}
     <div class="card blue-grey darken-1">
       <div class="card-content white-text">
         <span class="card-title"><a href="{% url 'schedules:group_detail' group.class_id.class_id group.group_number %}" class="link-card">{{ group }}</a></span>
@@ -32,14 +32,10 @@
         </p>
       </div>
       <div class="card-action">
-        {% for key, students in students_enrolled.items %}
-          {% if key == group.group_number %}
-            {% for student_enrolled in students %}
-              <a href="{% url 'schedules:student_detail' student_enrolled.id %}">{{ student_enrolled }}</a>
-            {% empty %}
-              <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">No hay nadie gg</a>
-            {% endfor %}
-          {% endif %}
+        {% for student in group.students.all %}
+          <a href="{% url 'schedules:student_detail' student.id %}">{{ student }}</a>
+        {% empty %}
+          <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">No hay nadie gg</a>
         {% endfor %}
       </div>
     </div>
