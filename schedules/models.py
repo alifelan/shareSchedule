@@ -66,18 +66,6 @@ class Group(models.Model):
         unique_together = (("group_number", "class_id", "semester"),)
 
 
-class Homework(models.Model):
-    """Homework model."""
-
-    text = models.TextField()
-    group_id = models.ForeignKey(Group, related_name='Homework',
-                                 on_delete=models.CASCADE)
-
-    def __str__(self):
-        """Return string."""
-        return "%s" % (self.text)
-
-
 class Student(models.Model):
     """Student model."""
 
