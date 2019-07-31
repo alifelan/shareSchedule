@@ -166,7 +166,7 @@ def register(request):
                         date_ids.append(1 + time_id + day * 10)
                         group.dates.add(Date.objects.get(id=date_ids[-1]))
                     if (datetime.strptime(time[1], fmt)
-                            - (datetime.strptime(time[0], fmt)).seconds // 60
+                            - (datetime.strptime(time[0], fmt)).second // 60
                             > 90):
                         for date_id in date_ids:
                             group.dates.add(Date.objects.get(id=date_id + 1))
