@@ -11,6 +11,6 @@
   {% endfor %}
   <h3>Tarea: </h3>
   {% for hw in group.homework.all %}
-    <p>{% hw %}</p>
+    <p>{{ hw }}</p>
   {% endfor %}
 {% endblock %}
