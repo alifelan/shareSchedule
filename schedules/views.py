@@ -44,7 +44,7 @@ def group_detail(request, class_id, group_number):
     current_class = Class.objects.get(class_id=class_id)
     group = Group.objects.get(class_id=current_class,
                               group_number=group_number)
-    return render(request, 'schedules/group_detail.html', {'group': group})
+    return render(request, 'schedules/group_detail.html', {'class_': current_class, 'group': group})
 
 
 def student_detail(request, student_id):
