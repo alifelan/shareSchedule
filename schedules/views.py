@@ -44,7 +44,7 @@ def group_detail(request, class_id, group_number):
     current_class = Class.objects.get(class_id=class_id)
     group = Group.objects.get(class_id=current_class,
                               group_number=group_number)
-    return render(request, 'schedules/group_detail.html', {'group': group})
+    return render(request, 'schedules/group_detail.html', {'class_': current_class, 'group': group})
 
 
 def student_detail(request, student_id):
@@ -65,6 +65,9 @@ def register(request):
     try:
         rawSchedule = request.FILES['rawSchedule.html'].read()
         name: str = request.POST['name']
+        if not name:
+            return render(request, 'schedules/register.html', {
+                'error_message': 'Tu nombre esta vacio'})
     except KeyError:
         return render(request, 'schedules/register.html')
     else:
@@ -162,8 +165,8 @@ def register(request):
                     for day in days:
                         date_ids.append(1 + time_id + day * 10)
                         group.dates.add(Date.objects.get(id=date_ids[-1]))
-                    if (datetime.strptime(time[1], fmt)
-                            - (datetime.strptime(time[0], fmt)).seconds // 60
+                    if (datetime.strptime(time[1], fmt).second
+                            - (datetime.strptime(time[0], fmt)).second // 60
                             > 90):
                         for date_id in date_ids:
                             group.dates.add(Date.objects.get(id=date_id + 1))
