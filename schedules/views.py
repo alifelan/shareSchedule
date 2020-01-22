@@ -133,7 +133,7 @@ def register(request):
             for l in cl[1:]:
                 if (l['align'] == 'left'
                         and 'Atributo' not in l.find('code').string):
-                    teacher_name = l.find_all('code')[1].contents[0]
+                    teacher_name = l.find_all('code')[1].contents[0][:40]
                     try:
                         teacher = (
                             Teacher.objects.get(teacher_name=teacher_name))
