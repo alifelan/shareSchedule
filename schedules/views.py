@@ -115,7 +115,7 @@ def register(request):
         classes = classes[1:]
         for cl in classes:
             class_text = cl[0].find('code').text
-            class_id = class_text[:class_text.find('.')]
+            class_id = class_text[:class_text.find('.')][:6]
             try:
                 current_class = Class.objects.get(class_id=class_id)
             except ObjectDoesNotExist:
